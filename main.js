@@ -23,6 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load the initial model
     loadModel(selectElement.value);
 
+    const bgColorInput = document.getElementById('bgColor');
+    bgColorInput.addEventListener('input', (event) => {
+        scene.background = new THREE.Color(event.target.value);
+    });
+
+    const cameraZInput = document.getElementById('cameraZ');
+    cameraZInput.addEventListener('input', (event) => {
+        camera.position.z = parseFloat(event.target.value);
+    });
+
     animate();
 });
 
