@@ -6,7 +6,7 @@ const loader = new GLTFLoader();
 let model;
 
 function loadModel(url) {
-    console.log(`Loading model from URL: ${url}`);
+    console.log('Loading model from URL:', url);
 
     loader.load(
         url,  // Load the selected model

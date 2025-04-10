@@ -16,4 +16,6 @@ textureLoader.load('assets/radialGradient.jpeg', (texture) => {
   scene.background = texture; // Set the image as the background
 });
 
+console.log('Scene initialized:', scene);
+
 export default scene;

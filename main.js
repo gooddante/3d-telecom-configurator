@@ -1,10 +1,8 @@
 import './modules/scene.js';
 import './modules/camera.js';
 import './modules/renderer.js'; // Ensure this sets the renderer
-//import './modules/light.js';
+import './modules/light.js';
 import './modules/orbitControls.js';
-
-import './modules/controls.js';
 
 import { loadModel } from './modules/model.js';
 import renderer from './modules/renderer.js';
@@ -15,6 +13,16 @@ import { updateControls } from './modules/orbitControls.js';
 // Ensure everything is ready before loading the model
 document.addEventListener('DOMContentLoaded', () => {
     const selectElement = document.getElementById('fileSelect');
+    const viewerContainer = document.querySelector('.viewer-container');
+
+    console.log('Dropdown element:', selectElement); // Should not be null
+    console.log('Viewer container:', viewerContainer); // Should not be null
+
+    if (!selectElement || !viewerContainer) {
+        console.error('Required DOM elements are missing!');
+        return;
+    }
+
     const folderPath = 'assets/';
 
     // Fetch the list of models from models.json
@@ -23,10 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 throw new Error('Failed to fetch models.json');
             }
+            console.log('models.json response:', response); // Debugging
             return response.json();
         })
         .then(files => {
-            // Populate the dropdown menu with the list of files
+            console.log('Models loaded:', files); // Debugging
             files.forEach(file => {
                 const option = document.createElement('option');
                 option.value = folderPath + file;
@@ -49,20 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
         loadModel(selectedUrl);
     });
 
-    const bgColorInput = document.getElementById('bgColor');
-    bgColorInput.addEventListener('input', (event) => {
-        scene.background = new THREE.Color(event.target.value);
-    });
-
-    const cameraZInput = document.getElementById('cameraZ');
-    cameraZInput.addEventListener('input', (event) => {
-        camera.position.z = parseFloat(event.target.value);
-    });
-
     animate();
 });
 
 function animate() {
+    console.log('Rendering frame...');
     requestAnimationFrame(animate);
     updateControls();
     renderer.render(scene, camera);
