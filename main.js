@@ -8,7 +8,7 @@ import { loadModel } from './modules/model.js';
 import renderer from './modules/renderer.js';
 import scene from './modules/scene.js';
 import camera from './modules/camera.js';
-import { updateControls } from './modules/orbitControls.js';
+import { updateControls, updateControlsTarget } from './modules/orbitControls.js';
 
 // Ensure everything is ready before loading the model
 document.addEventListener('DOMContentLoaded', () => {
