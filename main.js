@@ -13,12 +13,12 @@ import { updateControls } from './modules/orbitControls.js';
 // Ensure everything is ready before loading the model
 document.addEventListener('DOMContentLoaded', () => {
     const selectElement = document.getElementById('fileSelect');
-    const viewerContainer = document.querySelector('.viewer-container');
+    const viewerCanvas = document.getElementById('viewer-canvas');
 
     console.log('Dropdown element:', selectElement); // Should not be null
-    console.log('Viewer container:', viewerContainer); // Should not be null
+    console.log('Viewer canvas:', viewerCanvas); // Should not be null
 
-    if (!selectElement || !viewerContainer) {
+    if (!selectElement || !viewerCanvas) {
         console.error('Required DOM elements are missing!');
         return;
     }
