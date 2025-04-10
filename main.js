@@ -15,13 +15,39 @@ import { updateControls } from './modules/orbitControls.js';
 // Ensure everything is ready before loading the model
 document.addEventListener('DOMContentLoaded', () => {
     const selectElement = document.getElementById('fileSelect');
+    const folderPath = 'assets/';
+
+    // Fetch the list of models from models.json
+    fetch(`${folderPath}models.json`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch models.json');
+            }
+            return response.json();
+        })
+        .then(files => {
+            // Populate the dropdown menu with the list of files
+            files.forEach(file => {
+                const option = document.createElement('option');
+                option.value = folderPath + file;
+                option.textContent = file;
+                selectElement.appendChild(option);
+            });
+
+            // Load the first model by default
+            if (files.length > 0) {
+                loadModel(folderPath + files[0]);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading models:', error);
+        });
+
+    // Add event listener for dropdown changes
     selectElement.addEventListener('change', (event) => {
         const selectedUrl = event.target.value;
         loadModel(selectedUrl);
     });
-
-    // Load the initial model
-    loadModel(selectElement.value);
 
     const bgColorInput = document.getElementById('bgColor');
     bgColorInput.addEventListener('input', (event) => {
