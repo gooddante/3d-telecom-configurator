@@ -22,24 +22,6 @@
       </div>
     </div>
 
-    <script>
-      // Specify the folder path
-      const folderPath = 'assets/';
-
-      // List of files in the folder (you can dynamically generate this list on the server-side)
-      const files = ['model1.glb', 'model2.glb', 'model3.glb', 'model4.glb', 'model5.glb', 'model6.glb', 'model7.glb', 'model8.glb', 'model9.glb', 'model10.glb'];
-
-      // Get the select element
-      const selectElement = document.getElementById('fileSelect');
-
-      // Populate the select element with options
-      files.forEach(file => {
-        const option = document.createElement('option');
-        option.value = folderPath + file;
-        option.textContent = file;
-        selectElement.appendChild(option);
-      });
-    </script>
     <script type="module" src="main.js"></script>
 </div>
 </body>
