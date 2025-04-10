@@ -1,7 +1,7 @@
 import './modules/scene.js';
 import './modules/camera.js';
 import './modules/renderer.js'; // Ensure this sets the renderer
-import './modules/light.js';
+//import './modules/light.js';
 import './modules/orbitControls.js';
 
 import './modules/controls.js';
