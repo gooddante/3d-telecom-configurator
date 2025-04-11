@@ -1,4 +1,4 @@
 @echo off
-cd /d %~dp0
-npx vite
-cmd /k
+echo Starting Fiber Optic Configurator 3D Viewer...
+npm run dev
+pause
