@@ -39,8 +39,8 @@ function createDefaultModel(type = 'connector') {
     }
 
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
+    mesh.castShadow = false;
+    mesh.receiveShadow = false;
     return mesh;
 }
 
@@ -86,8 +86,8 @@ function loadModel(url, onProgress) {
                 // Enable shadows and optimize materials
                 model.traverse((child) => {
                     if (child.isMesh) {
-                        child.castShadow = true;
-                        child.receiveShadow = true;
+                        child.castShadow = false;
+                        child.receiveShadow = false;
                         
                         // Ensure material is MeshStandardMaterial with optimized settings
                         if (!(child.material instanceof THREE.MeshStandardMaterial)) {
@@ -109,7 +109,7 @@ function loadModel(url, onProgress) {
 
                 // Scale the model to a reasonable size
                 const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = maxDim > 0 ? 2 / maxDim : 1;
+                const scale = maxDim > 0 ? 5 / maxDim : 1;
                 model.scale.set(scale, scale, scale);
 
                 // Center the model
@@ -196,8 +196,8 @@ function handleSuccessfulLoad(loadedModel, resolve) {
     // Enable shadows and update materials
     model.traverse((child) => {
         if (child.isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
+            child.castShadow = false;
+            child.receiveShadow = false;
             
             // Ensure material is MeshStandardMaterial
             if (!(child.material instanceof THREE.MeshStandardMaterial)) {

@@ -13,7 +13,8 @@ controls.dampingFactor = 0.05;
 controls.screenSpacePanning = false;
 controls.minDistance = 1;
 controls.maxDistance = 50;
-controls.maxPolarAngle = Math.PI / 2;
+controls.maxPolarAngle = Math.PI;  // Allow full rotation
+controls.minPolarAngle = 0;        // Allow looking from below
 
 // Update controls target
 export function updateControlsTarget(target = new THREE.Vector3(0, 0, 0)) {

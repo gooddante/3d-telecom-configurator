@@ -1,22 +1,22 @@
 import * as THREE from 'three';
 import scene from './scene.js';
 
-// Key Light
+// Key Light (main light)
 const keyLight = new THREE.DirectionalLight(0xffffff, 1.5);
 keyLight.position.set(5, 5, 5);
-keyLight.castShadow = true;
+keyLight.castShadow = false;  // Disabled shadow casting
 scene.add(keyLight);
 
-// Fill Light
+// Fill Light (softer, no shadow)
 const fillLight = new THREE.DirectionalLight(0xffffff, 0.75);
 fillLight.position.set(-5, 5, 5);
-fillLight.castShadow = true;
+fillLight.castShadow = false;  // Disabled shadow casting
 scene.add(fillLight);
 
-// Back Light
+// Back Light (rim light, no shadow)
 const backLight = new THREE.DirectionalLight(0xffffff, 1);
 backLight.position.set(0, 5, -5);
-backLight.castShadow = true;
+backLight.castShadow = false;  // Disabled shadow casting
 scene.add(backLight);
 
 // Softbox Geometry and Material
