@@ -1,13 +1,19 @@
 {
-  "dependencies": {
-    "three": "^0.175.0"
-  },
-  "devDependencies": {
-    "vite": "^4.0.0"
-  },
+  "name": "fiber-optic-configurator",
+  "version": "1.0.0",
+  "description": "A 3D viewer application for fiber optic products",
+  "main": "main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "vite preview"
-  }
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.159.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "author": "",
+  "license": "MIT"
 }
