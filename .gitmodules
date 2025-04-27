@@ -1,3 +1,1 @@
-[submodule "nova"]
-	path = nova
-	url = https://github.com/bahaeben/nova.git
+node_modules
