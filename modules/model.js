@@ -109,7 +109,7 @@ function loadModel(url, onProgress) {
 
                 // Scale the model to a reasonable size
                 const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = maxDim > 0 ? 5 / maxDim : 1;
+                const scale = maxDim > 0 ? 6 / maxDim : 1;
                 model.scale.set(scale, scale, scale);
 
                 // Center the model
