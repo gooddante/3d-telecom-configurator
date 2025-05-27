@@ -41,5 +41,3 @@ Thumbs.db
 # IDE files
 *.code-workspace
 
-# Ignore nova folder (if needed)
-nova/
