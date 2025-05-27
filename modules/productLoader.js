@@ -1,9 +1,6 @@
 /**
- * Product Loader Module
- * Handles loading and managing product data from the catalogue
+ * Product Loader - Simplified
  */
-
-import { ErrorHandlers } from './errorHandler.js';
 
 let catalogueData = null;
 
@@ -12,59 +9,64 @@ let catalogueData = null;
  * @returns {Promise<Object>} Catalogue data
  */
 export async function loadCatalogue() {
-  if (catalogueData) {
-    return catalogueData;
-  }
-
+  if (catalogueData) return catalogueData;
+  
   try {
-    const response = await fetch('assets/models.json');
+    const response = await fetch('./assets/models.json');
     if (!response.ok) {
       throw new Error(`Failed to load catalogue: ${response.status} ${response.statusText}`);
     }
     
     catalogueData = await response.json();
-    console.log('Product catalogue loaded successfully');
+    console.log('✅ Catalogue loaded successfully');
     return catalogueData;
   } catch (error) {
-    ErrorHandlers.networkError('assets/models.json', error);
+    console.error('Failed to load catalogue:', error);
     throw error;
   }
 }
 
 /**
- * Find a product by ID in a given catalogue
+ * Find a product by ID in the catalogue
  * @param {Object} catalogue - Catalogue data containing categories
  * @param {string} productId - Product ID to find
  * @returns {Object|null} Product data or null if not found
  */
 export function findProductById(catalogue, productId) {
-  if (!catalogue || !productId) {
-    return null;
-  }
-
-  try {
-    // Search through all categories
-    for (const category of catalogue.categories) {
+  if (!catalogue?.categories || !productId) return null;
+  
+  for (const category of catalogue.categories) {
+    // Check main products
+    if (category.products) {
       const product = category.products.find(p => p.id === productId);
       if (product) {
-        // Add category information to the product
         return {
           ...product,
-          category: {
-            id: category.id,
-            name: category.name
-          },
-          // Add model_url field based on filename
-          model_url: product.filename ? `assets/${product.filename}` : null
+          category: { id: category.id, name: category.name },
+          model_url: product.filename ? `./assets/${product.filename}` : null
         };
       }
     }
     
-    return null;
-  } catch (error) {
-    console.error('Error finding product:', error);
-    return null;
+    // Check subcategory products
+    if (category.subcategories) {
+      for (const subcategory of category.subcategories) {
+        if (subcategory.products) {
+          const product = subcategory.products.find(p => p.id === productId);
+          if (product) {
+            return {
+              ...product,
+              category: { id: category.id, name: category.name },
+              subcategory: { id: subcategory.id, name: subcategory.name },
+              model_url: product.filename ? `./assets/${product.filename}` : null
+            };
+          }
+        }
+      }
+    }
   }
+  
+  return null;
 }
 
 /**
@@ -81,7 +83,6 @@ export async function getProduct(productId) {
   const product = await findProductById(catalogueData, productId);
   
   if (!product) {
-    ErrorHandlers.productNotFound(productId);
     throw new Error(`Product '${productId}' not found`);
   }
 
@@ -177,7 +178,7 @@ export function getModelPath(product) {
     throw new Error('Invalid product or missing filename');
   }
   
-  return `assets/${product.filename}`;
+  return `./assets/${product.filename}`;
 }
 
 /**

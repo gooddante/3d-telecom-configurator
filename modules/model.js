@@ -163,7 +163,7 @@ function tryFallbackModel(originalUrl, resolve) {
     const modelNumber = originalUrl.match(/model(\d+)\.glb/);
     if (modelNumber) {
         // Try to load the model directly from the assets folder
-        const modelPath = `assets/model${modelNumber[1]}.glb`;
+        const modelPath = `./assets/model${modelNumber[1]}.glb`;
         console.log('Trying to load model from:', modelPath);
         
         loader.load(

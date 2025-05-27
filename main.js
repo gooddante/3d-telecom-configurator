@@ -1,5 +1,5 @@
 /**
- * Main Application Entry Point
+ * Main Application Entry Point - Simplified
  * 3D Product Configurator for ExpertCN
  * URL-based single product loader with iframe compatibility
  */
@@ -15,7 +15,6 @@ import { loadModel } from './modules/model.js';
 import { getProductIdFromUrl, updateUrlWithProduct } from './modules/urlManager.js';
 import { updateProductDisplay, updateSpecifications, showError } from './modules/uiManager.js';
 import { loadCatalogue, findProductById } from './modules/productLoader.js';
-import { handleError } from './modules/errorHandler.js';
 
 // Global variables
 let scene, camera, renderer, controls;
@@ -41,26 +40,17 @@ async function init() {
         
         // Load product catalogue
         catalogue = await loadCatalogue();
-        console.log('📦 Product catalogue loaded:', catalogue);
+        console.log(`📦 Catalogue loaded: ${catalogue.categories.length} categories`);
         
-        // Get product ID from URL
-        const productId = getProductIdFromUrl();
-        console.log('🔗 Product ID from URL:', productId);
+        // Get product ID from URL or use fallback
+        const productId = getProductIdFromUrl() || 'connecteur-sc';
+        console.log('🔗 Loading product:', productId);
         
-        // Load initial product
-        if (productId) {
-            await loadProductById(productId);
-        } else {
-            // Load default product (first in catalogue)
-            if (catalogue && catalogue.length > 0) {
-                await loadProductById(catalogue[0].id);
-            }
-        }
-        
+        await loadProductById(productId);
         console.log('✅ 3D Product Configurator initialized successfully');
         
     } catch (error) {
-        handleError('Failed to initialize 3D configurator', error);
+        console.error('Failed to initialize 3D configurator:', error);
         showError('Failed to load the 3D configurator. Please refresh the page.');
     }
 }
@@ -73,22 +63,18 @@ async function loadProductById(productId) {
     try {
         console.log('🔄 Loading product:', productId);
         
-        // Find product in catalogue
         const product = findProductById(catalogue, productId);
         if (!product) {
-            throw new Error(`Product not found: ${productId}`);
+            console.error(`Product not found: ${productId}`);
+            showError(`Product '${productId}' not found`);
+            return;
         }
         
         currentProduct = product;
-        
-        // Update URL
         updateUrlWithProduct(productId);
-        
-        // Update UI
         updateProductDisplay(product);
         updateSpecifications(product);
         
-        // Load 3D model
         if (product.model_url) {
             await loadModel(scene, product.model_url);
             console.log('✅ Product loaded successfully:', product.name);
@@ -97,8 +83,8 @@ async function loadProductById(productId) {
         }
         
     } catch (error) {
-        handleError(`Failed to load product: ${productId}`, error);
-        showError(`Failed to load product. Please try again.`);
+        console.error(`Failed to load product: ${productId}`, error);
+        showError('Failed to load product. Please try again.');
     }
 }
 
@@ -107,9 +93,12 @@ async function loadProductById(productId) {
  */
 function onWindowResize() {
     if (camera && renderer) {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        const container = document.querySelector('.viewer-container');
+        if (container) {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
     }
 }
 
