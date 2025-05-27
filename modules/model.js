@@ -244,41 +244,4 @@ function handleSuccessfulLoad(loadedModel, resolve) {
     resolve(model);
 }
 
-function updateModelProperty(propertyName, propertyValue) {
-    if (!model) return;
-    
-    console.log(`Updating model property: ${propertyName} = ${propertyValue}`);
-    
-    model.traverse((child) => {
-        if (child.isMesh) {
-            if (propertyName === 'color') {
-                const colorMap = {
-                    'Bleu': 0x4287f5,
-                    'Noir': 0x000000,
-                    'Blanc': 0xFFFFFF,
-                    'Gris': 0x808080,
-                    'Vert': 0x2ecc71,
-                    'Beige': 0xf5d76e,
-                    'Violet': 0x9b59b6,
-                    'Jaune': 0xf1c40f
-                };
-                
-                if (colorMap[propertyValue]) {
-                    child.material = new THREE.MeshStandardMaterial({
-                        color: colorMap[propertyValue],
-                        metalness: 0.5,
-                        roughness: 0.5
-                    });
-                }
-            }
-            
-            if (propertyName === 'connector_type' || propertyName === 'polish') {
-                // Here you would typically load different connector type models
-                // For now, we'll just log the change
-                console.log(`Changed ${propertyName} to ${propertyValue}`);
-            }
-        }
-    });
-}
-
-export { model, loadModel, updateModelProperty };
+export { model, loadModel };
