@@ -1,11 +1,10 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import scene from './scene.js';
-import camera from './camera.js';
 import { updateControlsTarget } from './orbitControls.js';
 
 const loader = new GLTFLoader();
 let model;
+let currentScene = null;
 
 // Create a default geometry for when models fail to load
 function createDefaultModel(type = 'connector') {
@@ -44,8 +43,18 @@ function createDefaultModel(type = 'connector') {
     return mesh;
 }
 
-function loadModel(url, onProgress) {
+/**
+ * Load a 3D model into the scene
+ * @param {THREE.Scene} scene - Three.js scene to add the model to
+ * @param {string} url - URL/path to the model file
+ * @param {Function} onProgress - Optional progress callback
+ * @returns {Promise<THREE.Object3D>} Promise that resolves with the loaded model
+ */
+function loadModel(scene, url, onProgress) {
     console.log(`Loading model from URL: ${url}`);
+    
+    // Store scene reference
+    currentScene = scene;
     
     return new Promise((resolve, reject) => {
         // Show loading state
@@ -56,8 +65,8 @@ function loadModel(url, onProgress) {
         }
 
         // Remove existing model if any
-        if (model) {
-            scene.remove(model);
+        if (model && currentScene) {
+            currentScene.remove(model);
             model.traverse((child) => {
                 if (child.isMesh) {
                     if (child.material) {
@@ -119,11 +128,10 @@ function loadModel(url, onProgress) {
                 model.rotation.set(0, 0, 0);
 
                 // Add to scene
-                scene.add(model);
+                currentScene.add(model);
                 console.log('Model added to scene:', model);
 
                 // Update camera and controls
-                updateCameraForModel(box);
                 updateControlsTarget(new THREE.Vector3(0, 0, 0));
 
                 // Hide loading overlay
@@ -181,10 +189,10 @@ function createDefaultModelForUrl(url, resolve) {
     else if (url.includes('cable')) type = 'cable';
     
     model = createDefaultModel(type);
-    scene.add(model);
+    if (currentScene) {
+        currentScene.add(model);
+    }
     
-    const box = new THREE.Box3().setFromObject(model);
-    updateCameraForModel(box);
     updateControlsTarget();
     
     resolve(model);
@@ -226,29 +234,14 @@ function handleSuccessfulLoad(loadedModel, resolve) {
     model.position.set(-center.x, -center.y, -center.z);
 
     // Add to scene
-    scene.add(model);
+    if (currentScene) {
+        currentScene.add(model);
+    }
 
-    // Update camera and controls
-    updateCameraForModel(box);
+    // Update controls
     updateControlsTarget(center);
 
     resolve(model);
-}
-
-function updateCameraForModel(box) {
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-    
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const fov = camera.fov * (Math.PI / 180);
-    const cameraZ = Math.abs(maxDim / Math.sin(fov / 2)) * 2.5;
-    
-    camera.position.set(cameraZ, cameraZ/2, cameraZ);
-    camera.lookAt(center);
-    
-    camera.near = cameraZ / 100;
-    camera.far = cameraZ * 100;
-    camera.updateProjectionMatrix();
 }
 
 function updateModelProperty(propertyName, propertyValue) {

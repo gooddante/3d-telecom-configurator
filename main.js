@@ -1,213 +1,143 @@
-import './modules/scene.js';
-import './modules/camera.js';
-import './modules/renderer.js';
-import './modules/light.js';
-import './modules/orbitControls.js';
+/**
+ * Main Application Entry Point
+ * 3D Product Configurator for ExpertCN
+ * URL-based single product loader with iframe compatibility
+ */
 
-import { loadModel, updateModelProperty } from './modules/model.js';
-import renderer from './modules/renderer.js';
-import scene from './modules/scene.js';
-import camera from './modules/camera.js';
-import { updateControls } from './modules/orbitControls.js';
+import * as THREE from 'three';
+import { initializeScene } from './modules/scene.js';
+import { initializeCamera } from './modules/camera.js';
+import { initializeRenderer } from './modules/renderer.js';
+import { initializeLights } from './modules/light.js';
+import { initializeControls } from './modules/orbitControls.js';
+import { startAnimation } from './modules/animate.js';
+import { loadModel } from './modules/model.js';
+import { getProductIdFromUrl, updateUrlWithProduct } from './modules/urlManager.js';
+import { updateProductDisplay, updateSpecifications, showError } from './modules/uiManager.js';
+import { loadCatalogue, findProductById } from './modules/productLoader.js';
+import { handleError } from './modules/errorHandler.js';
 
-// Global variables to store current model data
-let currentModelData = null;
-let currentModelProperties = {};
+// Global variables
+let scene, camera, renderer, controls;
+let currentProduct = null;
+let catalogue = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Get DOM elements
-    const categorySelect = document.getElementById('category-select');
-    const productSelect = document.getElementById('product-select');
-    const productName = document.getElementById('product-name');
-    const productDescription = document.getElementById('product-description');
-    const specsList = document.getElementById('specs-list');
-    const propertiesList = document.getElementById('properties-list');
-    const downloadSpecs = document.getElementById('download-specs');
-    const requestQuote = document.getElementById('request-quote');
-    const loadingOverlay = document.getElementById('loading-overlay');
-    const loadingProgress = document.getElementById('loading-progress');
-
-    // Validate required elements
-    if (!categorySelect || !productSelect) {
-        console.error('Required selection elements are missing!');
-        return;
-    }
-
-    // Fetch the product data
-    fetch('assets/models.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch models.json');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Store the data for later use
-            currentModelData = data;
-
-            // Populate category dropdown
-            data.categories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category.id;
-                option.textContent = category.name;
-                categorySelect.appendChild(option);
-            });
-
-            // Initialize with first category if available
-            if (data.categories.length > 0) {
-                populateProducts(data.categories[0].id);
-            }
-        })
-        .catch(error => {
-            console.error('Error loading product data:', error);
-            showError('Failed to load product data');
-        });
-
-    // Category selection change handler
-    categorySelect.addEventListener('change', (event) => {
-        const selectedCategoryId = event.target.value;
-        populateProducts(selectedCategoryId);
-    });
-
-    // Product selection change handler
-    productSelect.addEventListener('change', (event) => {
-        const selectedProductId = event.target.value;
-        const selectedCategoryId = categorySelect.value;
+/**
+ * Initialize the 3D configurator
+ */
+async function init() {
+    try {
+        console.log('🚀 Initializing 3D Product Configurator...');
         
-        const category = currentModelData.categories.find(cat => cat.id === selectedCategoryId);
-        if (category) {
-            const product = category.products.find(prod => prod.id === selectedProductId);
-            if (product) {
-                updateProductDisplay(product);
+        // Initialize Three.js components
+        scene = initializeScene();
+        camera = initializeCamera();
+        renderer = initializeRenderer();
+        initializeLights(scene);
+        controls = initializeControls(camera, renderer);
+        
+        // Start animation loop
+        startAnimation(scene, camera, renderer);
+        
+        // Load product catalogue
+        catalogue = await loadCatalogue();
+        console.log('📦 Product catalogue loaded:', catalogue);
+        
+        // Get product ID from URL
+        const productId = getProductIdFromUrl();
+        console.log('🔗 Product ID from URL:', productId);
+        
+        // Load initial product
+        if (productId) {
+            await loadProductById(productId);
+        } else {
+            // Load default product (first in catalogue)
+            if (catalogue && catalogue.length > 0) {
+                await loadProductById(catalogue[0].id);
             }
         }
-    });
-
-    function showError(message) {
-        console.error(message);
-        if (loadingOverlay) {
-            loadingOverlay.style.display = 'none';
-        }
-        // You could add UI error handling here
-    }
-
-    function updateProductDisplay(product) {
-        // Update product info
-        productName.textContent = product.name;
-        productDescription.textContent = product.description;
-
-        // Show loading overlay
-        if (loadingOverlay) {
-            loadingOverlay.style.display = 'flex';
-        }
-
-        // Construct the correct model path
-        const modelPath = `assets/${product.filename}`;
-        console.log('Loading model from:', modelPath);
-
-        // Load the 3D model
-        loadModel(modelPath)
-            .then(() => {
-                if (loadingOverlay) {
-                    loadingOverlay.style.display = 'none';
-                }
-            })
-            .catch(error => {
-                console.error('Error loading model:', error);
-                showError('Failed to load 3D model');
-            });
-
-        // Update specifications
-        updateSpecifications(product.specifications);
-
-        // Update configurable properties
-        updateProperties(product.properties);
-    }
-
-    function updateSpecifications(specifications) {
-        if (!specsList) return;
-
-        specsList.innerHTML = '';
         
-        Object.entries(specifications).forEach(([key, value]) => {
-            const specItem = document.createElement('div');
-            specItem.className = 'spec-item';
-            
-            const label = document.createElement('span');
-            label.className = 'spec-label';
-            label.textContent = formatLabel(key);
-            
-            const valueSpan = document.createElement('span');
-            valueSpan.className = 'spec-value';
-            valueSpan.textContent = value;
-            
-            specItem.appendChild(label);
-            specItem.appendChild(valueSpan);
-            specsList.appendChild(specItem);
-        });
-    }
-
-    function updateProperties(properties) {
-        if (!propertiesList) return;
-
-        propertiesList.innerHTML = '';
-        currentModelProperties = {};
-
-        Object.entries(properties).forEach(([key, values]) => {
-            const propertyGroup = document.createElement('div');
-            propertyGroup.className = 'property-group';
-
-            const label = document.createElement('label');
-            label.textContent = formatLabel(key);
-
-            const select = document.createElement('select');
-            select.className = 'property-select';
-
-            values.forEach(value => {
-                const option = document.createElement('option');
-                option.value = value;
-                option.textContent = value;
-                select.appendChild(option);
-            });
-
-            select.addEventListener('change', (event) => {
-                currentModelProperties[key] = event.target.value;
-                updateModelProperty(key, event.target.value);
-            });
-
-            propertyGroup.appendChild(label);
-            propertyGroup.appendChild(select);
-            propertiesList.appendChild(propertyGroup);
-        });
-    }
-
-    function populateProducts(categoryId) {
-        productSelect.innerHTML = '<option value="">Sélectionnez un produit</option>';
+        console.log('✅ 3D Product Configurator initialized successfully');
         
-        const category = currentModelData.categories.find(cat => cat.id === categoryId);
-        if (category) {
-            category.products.forEach(product => {
-                const option = document.createElement('option');
-                option.value = product.id;
-                option.textContent = product.name;
-                productSelect.appendChild(option);
-            });
+    } catch (error) {
+        handleError('Failed to initialize 3D configurator', error);
+        showError('Failed to load the 3D configurator. Please refresh the page.');
+    }
+}
+
+/**
+ * Load a product by its ID
+ * @param {string} productId - The product ID to load
+ */
+async function loadProductById(productId) {
+    try {
+        console.log('🔄 Loading product:', productId);
+        
+        // Find product in catalogue
+        const product = findProductById(catalogue, productId);
+        if (!product) {
+            throw new Error(`Product not found: ${productId}`);
         }
+        
+        currentProduct = product;
+        
+        // Update URL
+        updateUrlWithProduct(productId);
+        
+        // Update UI
+        updateProductDisplay(product);
+        updateSpecifications(product);
+        
+        // Load 3D model
+        if (product.model_url) {
+            await loadModel(scene, product.model_url);
+            console.log('✅ Product loaded successfully:', product.name);
+        } else {
+            console.warn('⚠️ No model URL found for product:', product.name);
+        }
+        
+    } catch (error) {
+        handleError(`Failed to load product: ${productId}`, error);
+        showError(`Failed to load product. Please try again.`);
     }
+}
 
-    function formatLabel(key) {
-        return key
-            .split('_')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
+/**
+ * Handle window resize
+ */
+function onWindowResize() {
+    if (camera && renderer) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
     }
+}
 
-    // Start animation loop
-    animate();
+// Event listeners
+window.addEventListener('resize', onWindowResize);
+
+// Handle browser back/forward navigation
+window.addEventListener('popstate', async (event) => {
+    const productId = getProductIdFromUrl();
+    if (productId && productId !== currentProduct?.id) {
+        await loadProductById(productId);
+    }
 });
 
-function animate() {
-    requestAnimationFrame(animate);
-    updateControls();
-    renderer.render(scene, camera);
+// Initialize when DOM is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
 }
+
+// Export for debugging
+window.configurator = {
+    scene,
+    camera,
+    renderer,
+    controls,
+    currentProduct,
+    catalogue,
+    loadProductById
+};

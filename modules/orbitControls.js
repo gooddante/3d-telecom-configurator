@@ -1,30 +1,53 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import camera from './camera.js';
-import renderer from './renderer.js';
-import { model } from './model.js';
 
-// Create orbit controls
-const controls = new OrbitControls(camera, renderer.domElement);
+let globalControls = null;
 
-// Configure controls
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;
-controls.screenSpacePanning = false;
-controls.minDistance = 1;
-controls.maxDistance = 50;
-controls.maxPolarAngle = Math.PI;  // Allow full rotation
-controls.minPolarAngle = 0;        // Allow looking from below
+/**
+ * Initialize and configure orbit controls
+ * @param {THREE.Camera} camera - Three.js camera
+ * @param {THREE.WebGLRenderer} renderer - Three.js renderer
+ * @returns {OrbitControls} Configured orbit controls
+ */
+export function initializeControls(camera, renderer) {
+    // Create orbit controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+
+    // Configure controls
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.screenSpacePanning = false;
+    controls.minDistance = 1;
+    controls.maxDistance = 50;
+    controls.maxPolarAngle = Math.PI;  // Allow full rotation
+    controls.minPolarAngle = 0;        // Allow looking from below
+
+    // Store reference for global functions
+    globalControls = controls;
+
+    console.log('Orbit controls initialized');
+    return controls;
+}
 
 // Update controls target
 export function updateControlsTarget(target = new THREE.Vector3(0, 0, 0)) {
-    controls.target.copy(target);
-    controls.update();
+    if (globalControls) {
+        globalControls.target.copy(target);
+        globalControls.update();
+    }
 }
 
 // Update controls in animation loop
 export function updateControls() {
-    controls.update();
+    if (globalControls) {
+        globalControls.update();
+    }
 }
 
-export default controls;
+// Create default instance for backward compatibility
+import camera from './camera.js';
+import renderer from './renderer.js';
+
+const defaultControls = initializeControls(camera, renderer);
+
+export default defaultControls;
