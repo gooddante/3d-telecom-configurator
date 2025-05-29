@@ -22,36 +22,19 @@
           }
         },
         {
-          "id": "connector-lc",
-          "name": "Connecteur LC",
-          "description": "Connecteur LC compact pour applications haute densité",
-          "filename": "model2.glb",
+          "id": "fx120",
+          "name": "FX120",
+          "description": "Connecteur FX120 haute performance pour applications professionnelles",
+          "filename": "fx120.glb",
           "specifications": {
-            "Type": "LC",
-            "Matériau": "Céramique",
-            "Perte d'insertion": "≤ 0.2 dB",
-            "Perte de retour": "≥ 55 dB"
-          },
-          "properties": {
-            "color": ["Bleu", "Vert", "Beige"],
-            "connector_type": ["LC/UPC", "LC/APC"],
-            "polish": ["UPC", "APC"]
-          }
-        },
-        {
-          "id": "connector-fc",
-          "name": "Connecteur FC",
-          "description": "Connecteur FC robuste pour environnements industriels",
-          "filename": "model3.glb",
-          "specifications": {
-            "Type": "FC",
+            "Type": "FX120",
             "Matériau": "Céramique",
             "Perte d'insertion": "≤ 0.25 dB",
             "Perte de retour": "≥ 52 dB"
           },
           "properties": {
-            "color": ["Noir", "Gris", "Beige"],
-            "connector_type": ["FC/UPC", "FC/APC"],
+            "color": ["Noir", "Gris", "Bleu"],
+            "connector_type": ["FX120/UPC", "FX120/APC"],
             "polish": ["UPC", "APC"]
           }
         }

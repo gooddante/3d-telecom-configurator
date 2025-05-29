@@ -15,11 +15,13 @@ import { loadModel } from './modules/model.js';
 import { getProductIdFromUrl, updateUrlWithProduct } from './modules/urlManager.js';
 import { updateProductDisplay, updateSpecifications, showError } from './modules/uiManager.js';
 import { loadCatalogue, findProductById } from './modules/productLoader.js';
+import { NavigationBuilder } from './modules/navigationBuilder.js';
 
 // Global variables
 let scene, camera, renderer, controls;
 let currentProduct = null;
 let catalogue = null;
+let navigationBuilder = null;
 
 /**
  * Initialize the 3D configurator
@@ -42,11 +44,25 @@ async function init() {
         catalogue = await loadCatalogue();
         console.log(`📦 Catalogue loaded: ${catalogue.categories.length} categories`);
         
+        // Initialize navigation builder
+        navigationBuilder = new NavigationBuilder('navigation-container');
+        navigationBuilder.buildNavigation(catalogue);
+        
+        // Listen for product selection events from navigation
+        document.addEventListener('productSelected', async (event) => {
+            const { productId } = event.detail;
+            await loadProductById(productId);
+        });
+        
         // Get product ID from URL or use fallback
-        const productId = getProductIdFromUrl() || 'connecteur-sc';
+        const productId = getProductIdFromUrl() || 'connector-sc';
         console.log('🔗 Loading product:', productId);
         
         await loadProductById(productId);
+        
+        // Initialize navigation state
+        navigationBuilder.initializeState();
+        
         console.log('✅ 3D Product Configurator initialized successfully');
         
     } catch (error) {
@@ -74,6 +90,11 @@ async function loadProductById(productId) {
         updateUrlWithProduct(productId);
         updateProductDisplay(product);
         updateSpecifications(product);
+        
+        // Update navigation active state
+        if (navigationBuilder) {
+            navigationBuilder.setActiveProduct(productId);
+        }
         
         if (product.model_url) {
             await loadModel(scene, product.model_url);
@@ -110,6 +131,11 @@ window.addEventListener('popstate', async (event) => {
     const productId = getProductIdFromUrl();
     if (productId && productId !== currentProduct?.id) {
         await loadProductById(productId);
+        
+        // Update navigation active state
+        if (navigationBuilder) {
+            navigationBuilder.setActiveProduct(productId);
+        }
     }
 });
 
@@ -128,5 +154,6 @@ window.configurator = {
     controls,
     currentProduct,
     catalogue,
+    navigationBuilder,
     loadProductById
 };

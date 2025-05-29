@@ -4,140 +4,105 @@
 
 ## 🧭 Overview
 
-This is a modular 3D product configurator designed for **ExpertCN**, embedded via `<iframe>` inside WordPress product pages.
+This is a modular 3D product configurator tailored for **ExpertCN**, embedded via `<iframe>` on **WordPress product pages**.
 
-- Each product page includes the configurator
-- Products are loaded using **SEO-friendly French URLs**:
-  ```
-  /produits/jarretiere-optique
-  /produits/connecteurs/connecteur-sc
-  /produits/accessoires/adaptateur-sc-lc
-  ```
-- The URL slug determines which product to display
-- A fallback legacy support (`?product=...`) is still available for backward compatibility
-- The system allows users to **visualize**, **customize**, and **request a quote** for telecom products
+- Each WordPress product page includes the configurator
+- The product page’s **URL parameter** or `postMessage` tells it which product to load
+- The goal is to let users **visualize, customize**, and **request a quote** for telecom products
 
 ---
 
 ## 🔍 Functionality
 
-### ✅ Core Features
-- **SEO-friendly product loading via slugs**
-- **Product-specific filters** loaded from `productCustomization.js`
-- **3D product visualization** with Three.js
-- **Quotation request** with downloadable `.txt` or `.pdf`
-- **Iframe-compatible** for seamless embedding on WordPress product pages
+### ✅ Product Loading
+- Loads product data and 3D model by parsing a `?product=` param or via iframe message
+- Uses simplified GLB model loading logic with fallback error handling
+- Catalogue data is fetched from `assets/models.json`
+- File structure has been greatly simplified for maintainability
+
+### ⚙️ Customization (Temporarily Removed)
+- Previous overengineered `productCustomization.js` was removed
+- Will be reintroduced in a **modular and optional** way, specific to products that require it
+
+### 📤 Quotation CTA
+- Prepares a downloadable spec sheet (planned)
+- Will allow users to send config details to sales team manually or via future backend integration
 
 ---
 
-## ⚙️ Customization & URL Logic
+## 🧰 Current Architecture
 
-- URLs follow a clean structure: `/produits/{slug}` or `/produits/{category}/{slug}`
-- Each product entry in `models.json` contains:
-  - `id`, `name`, `slug` (for SEO), `filename`, and `seo` metadata (title, description, keywords)
-- Slugs are either predefined or generated from the French product name
-- Product data is resolved via a `findProductBySlug()` utility
-
----
-
-## 📤 Quotation CTA
-
-- A “Request a Quote” button generates a downloadable specification file
-- The file includes:
-  - Product name and category
-  - Selected customization options
-  - Optional timestamp/contact info
-- Future backend integration may allow automatic submission to sales team
-
----
-
-## 🧰 Codebase Structure
+### 🗂 Simplified File Structure
 
 ```
 3d_product_configurator/
-├── main.js                        # App entry point (being refactored)
-├── context.md                     # This file
+├── main.js                      # Application entry point - simplified
 ├── modules/
-│   ├── model.js                   # 3D model loader
-│   ├── productCustomization.js    # Product-specific filter logic
-│   ├── urlManager.js              # URL parsing and slug matching
-│   ├── scene.js, camera.js, renderer.js, etc.
-│   └── selectionManager.js        # 🔴 Legacy catalogue logic (deprecated)
-├── utils/
-│   └── slugGenerator.js           # Generates SEO slugs from French product names
-├── styles/
-│   └── style.css
+│   ├── model.js                 # 3D model loader (centralized)
+│   ├── uiManager.js            # DOM updates for product info and specs
+│   ├── productLoader.js        # Fetch and parse models.json
+│   ├── errorHandler.js         # Unified error logging
+│   └── urlManager.js           # URL param logic
 ├── assets/
-│   ├── models.json                # Product data with SEO slugs
-│   ├── *.glb, *.hdr, *.jpeg       # 3D models and assets
+│   ├── models.json              # Product definitions
+│   └── *.glb                    # 3D models
+├── styles/
+│   └── style.css                # Simplified styling
 ```
 
 ---
 
-## 📐 Dev Philosophy
+## 📐 Simplification Summary
 
-> Clarity before complexity.  
-> Build a tool that is SEO-friendly, scalable, and understandable even after weeks of inactivity.  
-> Prioritize ease of use, readability, and maintainability.
-
----
-
-## ✅ Best Practices
-
-- Use French product slugs for URL paths
-- No direct DOM manipulation
-- Modularize logic only when necessary
-- Avoid one-size-fits-all logic — product filters must be specific
-- Keep `models.json` the single source of truth for product data
+| File                | Old Lines | New Lines | Reduction |
+|---------------------|-----------|-----------|-----------|
+| errorHandler.js     | 247       | 30        | 88%       |
+| productLoader.js    | 223       | 58        | 74%       |
+| uiManager.js        | 237       | 54        | 77%       |
+| productCustomization.js | 293   | 12 (stub) | 96%       |
+| main.js             | 144       | 120       | 17%       |
 
 ---
 
-## 🚫 Anti-Patterns
+## ✅ Completed Refactor Tasks
 
-- ❌ Catalogue UI (we use URL-based single-product routing)
-- ❌ Hardcoded product logic in `main.js`
-- ❌ Missing or duplicate slugs
-- ❌ Over-abstraction that hides critical logic
-
----
-
-## 🧪 Known Limitations
-
-- No backend quote submission yet
-- `main.js` still needs cleanup
-- Admin dashboard for product URL/SEO management is not yet implemented
+- ✅ Removed catalogue view logic
+- ✅ Replaced product loading with URL + message-based method
+- ✅ Simplified error handling
+- ✅ Cleaned UI update logic
+- ✅ Removed unused files (`selectionManager.js`, `callouts.js`, etc.)
+- ✅ Created a clear fallback path if product not found
+- ✅ Draco compression path planned
 
 ---
 
-## 🛠 Current Priorities
+## 🔁 Next Refactor Steps
 
-1. Refactor `main.js` to remove catalogue logic and support SEO URLs
-2. Update all product entries in `models.json` with slugs and `seo` metadata
-3. Implement slug fallback for old `?product=` URLs
-4. Validate all slugs for uniqueness and readability
-5. Test product loading and quotation generation end-to-end
+### **Phase 2: Add Iframe Messaging**
+- Listen for `window.postMessage` to dynamically load product from WordPress
+- Send back `threejs-ready` event to parent
+
+### **Phase 3: Dynamic Model Reloading**
+- Replace current model without reloading the page
+- Clean up scene and dispose memory properly
+
+### **Phase 4: Reintroduce Customization (Clean)**
+- Create lightweight, per-product config system
+- Only render filters that are defined in `models.json`
+
+### **Phase 5: Generate Spec Sheet**
+- Downloadable `.txt` or `.pdf` file containing selected product info
+- Hooked to the "Request Quotation" CTA
+
+### **Phase 6: Optimize Model Performance**
+- Add DRACO loader support
+- Compress models and test load times
 
 ---
 
-## 🔍 Local Testing
+## 🧠 Development Philosophy
 
-Use the following local URLs:
-```
-http://localhost:5173/produits/jarretiere-optique
-http://localhost:5173/produits/accessoires/adaptateur-sc-lc
-```
-
-For iframe test:
-```html
-<iframe src="/produits/jarretiere-optique" width="100%" height="600"></iframe>
-```
-
----
-
-## 🇫🇷 SEO Strategy Summary
-
-- URLs are in French, clean, and indexed
-- Each product includes metadata for SEO (title, description, keywords)
-- Category slugs are supported
-- Backward compatibility with query parameters ensures smooth transition
+> The project prioritizes **clarity**, **modularity**, and **MVP-first logic**.  
+> Unused abstractions and bloated utilities have been removed to make the code maintainable and transparent.  
+> The goal is a stable, understandable product viewer that integrates cleanly into ExpertCN’s sales workflow and website.
 

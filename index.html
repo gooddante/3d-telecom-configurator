@@ -22,31 +22,19 @@
     </div>
     
     <div class="sidebar">
-      <div class="product-selection">
-        <h2>Sélection du Produit</h2>
-        
-        <!-- Category Selection -->
-        <div class="control-group">
-          <label for="category-select">Catégorie</label>
-          <select id="category-select" class="styled-select">
-            <option value="">Sélectionnez une catégorie</option>
-          </select>
-        </div>
-        
-        <!-- Product Selection -->
-        <div class="control-group">
-          <label for="product-select">Produit</label>
-          <select id="product-select" class="styled-select">
-            <option value="">Sélectionnez un produit</option>
-          </select>
+      <!-- Product Navigation - will be populated dynamically -->
+      <div class="product-navigation">
+        <h2>Naviguer les Produits</h2>
+        <div id="navigation-container">
+          <!-- Categories and products will be dynamically loaded here -->
         </div>
       </div>
       
       <!-- Product Information -->
       <div class="product-info">
         <div>
-          <h3 id="product-name">Nom du Produit</h3>
-          <p id="product-description" class="description">Description du produit...</p>
+          <h3 id="product-name">Sélectionnez un Produit</h3>
+          <p id="product-description" class="description">Choisissez un produit ci-dessus pour voir ses détails...</p>
         </div>
         
         <!-- Technical Specifications -->
@@ -54,14 +42,6 @@
           <h4>Spécifications Techniques</h4>
           <div id="specs-list" class="specs-list">
             <!-- Specifications will be dynamically populated -->
-          </div>
-        </div>
-        
-        <!-- Configuration Options -->
-        <div class="panel">
-          <h4>Configuration</h4>
-          <div id="properties-list" class="properties-list">
-            <!-- Properties will be dynamically populated -->
           </div>
         </div>
       </div>
