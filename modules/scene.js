@@ -37,7 +37,7 @@ export function initializeScene() {
 
     // Set up the HDRI environment with error handling
     const rgbeLoader = new RGBELoader();
-    rgbeLoader.load('./assets/studio.hdr', 
+    rgbeLoader.load('./public/assets/studio.hdr', 
         (texture) => {
             texture.mapping = THREE.EquirectangularReflectionMapping;
             scene.environment = texture; // Use HDRI only for environment lighting
@@ -52,7 +52,7 @@ export function initializeScene() {
 
     // Load the radial gradient image as the background
     const textureLoader = new THREE.TextureLoader();
-    textureLoader.load('./assets/radialGradient.jpeg', (texture) => {
+    textureLoader.load('./public/assets/radialGradient.jpeg', (texture) => {
         scene.background = texture; // Set the image as the background
     });
 
