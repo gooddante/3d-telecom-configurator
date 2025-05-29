@@ -5,17 +5,17 @@
  */
 
 import * as THREE from 'three';
-import { initializeScene } from './modules/scene.js';
-import { initializeCamera } from './modules/camera.js';
-import { initializeRenderer } from './modules/renderer.js';
-import { initializeLights } from './modules/light.js';
-import { initializeControls } from './modules/orbitControls.js';
-import { startAnimation } from './modules/animate.js';
-import { loadModel } from './modules/model.js';
-import { getProductIdFromUrl, updateUrlWithProduct } from './modules/urlManager.js';
-import { updateProductDisplay, updateSpecifications, showError } from './modules/uiManager.js';
-import { loadCatalogue, findProductById } from './modules/productLoader.js';
-import { NavigationBuilder } from './modules/navigationBuilder.js';
+import { initializeScene } from '@modules/scene.js';
+import { initializeCamera } from '@modules/camera.js';
+import { initializeRenderer } from '@modules/renderer.js';
+import { initializeLights } from '@modules/light.js';
+import { initializeControls } from '@modules/orbitControls.js';
+import { startAnimation } from '@modules/animate.js';
+import { loadModel } from '@modules/model.js';
+import { getProductIdFromUrl, updateUrlWithProduct } from '@modules/urlManager.js';
+import { updateProductDisplay, updateSpecifications, showError } from '@modules/uiManager.js';
+import { loadCatalogue, findProductById } from '@modules/productLoader.js';
+import { NavigationBuilder } from '@modules/navigationBuilder.js';
 
 // Global variables
 let scene, camera, renderer, controls;

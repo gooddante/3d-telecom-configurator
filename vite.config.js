@@ -5,6 +5,14 @@ export default defineConfig({
   base: '/3d-telecom-configurator/',
   root: 'src',
   publicDir: '../public',
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      '@modules': resolve(__dirname, 'src/modules'),
+      '@styles': resolve(__dirname, 'src/styles'),
+      '@assets': resolve(__dirname, 'public/assets')
+    }
+  },
   server: {
     open: true,
     port: 5173

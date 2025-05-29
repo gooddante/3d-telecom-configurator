@@ -12,7 +12,7 @@ export async function loadCatalogue() {
   if (catalogueData) return catalogueData;
   
   try {
-    const response = await fetch('/assets/models.json');
+    const response = await fetch('/3d-telecom-configurator/assets/models.json');
     if (!response.ok) {
       throw new Error(`Failed to load catalogue: ${response.status} ${response.statusText}`);
     }
@@ -43,7 +43,7 @@ export function findProductById(catalogue, productId) {
         return {
           ...product,
           category: { id: category.id, name: category.name },
-          model_url: product.filename ? `/assets/${product.filename}` : null
+          model_url: product.filename ? `/3d-telecom-configurator/assets/${product.filename}` : null
         };
       }
     }
@@ -58,7 +58,7 @@ export function findProductById(catalogue, productId) {
               ...product,
               category: { id: category.id, name: category.name },
               subcategory: { id: subcategory.id, name: subcategory.name },
-              model_url: product.filename ? `/assets/${product.filename}` : null
+              model_url: product.filename ? `/3d-telecom-configurator/assets/${product.filename}` : null
             };
           }
         }
@@ -178,7 +178,7 @@ export function getModelPath(product) {
     throw new Error('Invalid product or missing filename');
   }
   
-  return `/assets/${product.filename}`;
+  return `/3d-telecom-configurator/assets/${product.filename}`;
 }
 
 /**

@@ -45,8 +45,8 @@ export function updateControls() {
 }
 
 // Create default instance for backward compatibility
-import camera from './camera.js';
-import renderer from './renderer.js';
+import camera from '@modules/camera.js';
+import renderer from '@modules/renderer.js';
 
 const defaultControls = initializeControls(camera, renderer);
 

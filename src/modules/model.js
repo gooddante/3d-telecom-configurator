@@ -1,14 +1,14 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
-import { updateControlsTarget } from './orbitControls.js';
+import { updateControlsTarget } from '@modules/orbitControls.js';
 
 // Initialize loaders with Draco support
 const loader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
 
 // Configure Draco decoder
-dracoLoader.setDecoderPath('/draco/'); // Path to the decoder files in public folder
+dracoLoader.setDecoderPath('/3d-telecom-configurator/draco/'); // Path to the decoder files in public folder
 dracoLoader.setDecoderConfig({ type: 'js' }); // Use JS fallback initially, will auto-detect WASM
 
 // Set up Draco loader with GLTFLoader
@@ -176,7 +176,7 @@ function tryFallbackModel(originalUrl, resolve) {
     const modelNumber = originalUrl.match(/model(\d+)\.glb/);
     if (modelNumber) {
         // Try to load the model directly from the assets folder
-        const modelPath = `/assets/model${modelNumber[1]}.glb`;
+        const modelPath = `/3d-telecom-configurator/assets/model${modelNumber[1]}.glb`;
         console.log('Trying to load model from:', modelPath);
         
         loader.load(

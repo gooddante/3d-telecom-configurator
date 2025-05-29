@@ -2,7 +2,7 @@
  * Animation Loop Module
  */
 
-import { updateControls } from './orbitControls.js';
+import { updateControls } from '@modules/orbitControls.js';
 
 let animationId = null;
 let isAnimating = false;

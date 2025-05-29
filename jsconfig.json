@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
-    "baseUrl": ".", // relative to tsconfig.json
+    "baseUrl": ".",
     "paths": {
-      "three/webgpu": ["node_modules/three/build/three.webgpu.js"],
-      "three/tsl": ["node_modules/three/build/three.tsl.js"]
+      "@/*": ["src/*"],
+      "@modules/*": ["src/modules/*"],
+      "@styles/*": ["src/styles/*"],
+      "@assets/*": ["public/assets/*"]
     }
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
