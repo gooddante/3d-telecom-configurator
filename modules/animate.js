@@ -1,3 +1,7 @@
+/**
+ * Animation Loop Module
+ */
+
 import { updateControls } from './orbitControls.js';
 
 let animationId = null;
@@ -8,10 +12,10 @@ let isAnimating = false;
  * @param {THREE.Scene} scene - Three.js scene
  * @param {THREE.Camera} camera - Three.js camera
  * @param {THREE.WebGLRenderer} renderer - Three.js renderer
+ * @param {OrbitControls} controls - Orbit controls instance
  */
-export function startAnimation(scene, camera, renderer) {
+export function startAnimation(scene, camera, renderer, controls) {
     if (isAnimating) {
-        console.warn('Animation already running');
         return;
     }
     
@@ -21,12 +25,11 @@ export function startAnimation(scene, camera, renderer) {
         if (!isAnimating) return;
         
         animationId = requestAnimationFrame(animate);
-        updateControls();
+        updateControls(controls);
         renderer.render(scene, camera);
     }
     
     animate();
-    console.log('🎬 Animation loop started');
 }
 
 /**
@@ -38,5 +41,4 @@ export function stopAnimation() {
         cancelAnimationFrame(animationId);
         animationId = null;
     }
-    console.log('⏹️ Animation loop stopped');
 }

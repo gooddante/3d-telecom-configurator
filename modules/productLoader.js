@@ -18,7 +18,6 @@ export async function loadCatalogue() {
     }
     
     catalogueData = await response.json();
-    console.log('✅ Catalogue loaded successfully');
     return catalogueData;
   } catch (error) {
     console.error('Failed to load catalogue:', error);

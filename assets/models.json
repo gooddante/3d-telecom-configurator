@@ -5,20 +5,13 @@
       "name": "Connecteurs",
       "products": [
         {
-          "id": "connector-sc",
-          "name": "Connecteur SC",
-          "description": "Connecteur SC haute performance pour fibre optique",
-          "filename": "model1.glb",
+          "id": "prise-terminale-optique",
+          "name": "Prise Terminale Optique",
+          "description": "Prise terminale optique haute performance pour fibre optique",
+          "filename": "pto.glb",
           "specifications": {
-            "Type": "SC",
-            "Matériau": "Céramique",
-            "Perte d'insertion": "≤ 0.3 dB",
-            "Perte de retour": "≥ 50 dB"
           },
           "properties": {
-            "color": ["Bleu", "Noir", "Blanc"],
-            "connector_type": ["SC/UPC", "SC/APC"],
-            "polish": ["UPC", "APC"]
           }
         },
         {
@@ -27,15 +20,8 @@
           "description": "Connecteur FX120 haute performance pour applications professionnelles",
           "filename": "fx120.glb",
           "specifications": {
-            "Type": "FX120",
-            "Matériau": "Céramique",
-            "Perte d'insertion": "≤ 0.25 dB",
-            "Perte de retour": "≥ 52 dB"
           },
           "properties": {
-            "color": ["Noir", "Gris", "Bleu"],
-            "connector_type": ["FX120/UPC", "FX120/APC"],
-            "polish": ["UPC", "APC"]
           }
         }
       ]
@@ -45,37 +31,23 @@
       "name": "Câbles",
       "products": [
         {
-          "id": "cable-indoor",
-          "name": "Câble Indoor",
-          "description": "Câble fibre optique pour installation intérieure",
-          "filename": "model4.glb",
+          "id": "opx-boxe",
+          "name": "OPX-BOXe",
+          "description": "Boîtier de distribution optique OPX-BOXe pour installation intérieure",
+          "filename": "OPX-BOXe.glb",
           "specifications": {
-            "Type": "Indoor",
-            "Nombre de fibres": "12",
-            "Diamètre": "6.5mm",
-            "Résistance": "2000N"
           },
           "properties": {
-            "color": ["Noir", "Blanc", "Gris"],
-            "length": ["10m", "20m", "50m", "100m"],
-            "fiber_count": ["4", "8", "12", "24"]
           }
         },
         {
-          "id": "cable-outdoor",
-          "name": "Câble Outdoor",
-          "description": "Câble fibre optique pour installation extérieure",
-          "filename": "model5.glb",
+          "id": "px90",
+          "name": "PX90",
+          "description": "Câble fibre optique PX90 pour installation extérieure",
+          "filename": "px90.glb",
           "specifications": {
-            "Type": "Outdoor",
-            "Nombre de fibres": "24",
-            "Diamètre": "8.5mm",
-            "Résistance": "3000N"
           },
           "properties": {
-            "color": ["Noir", "Gris"],
-            "length": ["50m", "100m", "200m", "500m"],
-            "fiber_count": ["12", "24", "48", "96"]
           }
         }
       ]
@@ -85,37 +57,23 @@
       "name": "Accessoires",
       "products": [
         {
-          "id": "splice-tray",
-          "name": "Cassette d'Épissurage",
-          "description": "Cassette pour protection et organisation des épissures",
-          "filename": "model6.glb",
+          "id": "raisecom-rax700",
+          "name": "Raisecom RAX700",
+          "description": "Équipement réseau Raisecom RAX700 pour applications fibre optique",
+          "filename": "RAX700.glb",
           "specifications": {
-            "Type": "Standard",
-            "Capacité": "24 épissures",
-            "Dimensions": "200x100x10mm",
-            "Matériau": "ABS"
           },
           "properties": {
-            "color": ["Noir", "Gris", "Blanc"],
-            "capacity": ["12", "24", "48"],
-            "type": ["Standard", "Compact"]
           }
         },
         {
-          "id": "patch-panel",
-          "name": "Panneau de Brassage",
-          "description": "Panneau de brassage 1U pour rack 19 pouces",
-          "filename": "model7.glb",
+          "id": "raisecom-rpa0361",
+          "name": "Raisecom RPA0361",
+          "description": "Équipement réseau Raisecom RPA0361 pour rack 19 pouces",
+          "filename": "RPA0361.glb",
           "specifications": {
-            "Format": "1U",
-            "Capacité": "24 ports",
-            "Compatibilité": "SC/LC/FC",
-            "Matériau": "Acier"
           },
           "properties": {
-            "color": ["Noir", "Gris"],
-            "port_count": ["12", "24", "48"],
-            "port_type": ["SC", "LC", "FC"]
           }
         }
       ]
@@ -125,54 +83,23 @@
       "name": "Assemblages",
       "products": [
         {
-          "id": "patch-cord",
-          "name": "Jarretière Optique",
-          "description": "Jarretière optique duplex haute performance",
-          "filename": "model8.glb",
+          "id": "raisecom-xyz-1234-switch",
+          "name": "Raisecom XYZ-1234 Switch",
+          "description": "Switch réseau Raisecom XYZ-1234 haute performance",
+          "filename": "XYZ-1234.glb",
           "specifications": {
-            "Type": "Duplex",
-            "Connecteurs": "LC-LC",
-            "Longueur": "2m",
-            "Grade": "OM4"
           },
           "properties": {
-            "color": ["Bleu", "Violet", "Jaune"],
-            "length": ["1m", "2m", "3m", "5m"],
-            "connector_type": ["LC-LC", "SC-SC", "LC-SC"]
           }
         },
         {
-          "id": "pigtail",
-          "name": "Pigtail",
-          "description": "Pigtail monomode 900µm",
-          "filename": "model9.glb",
+          "id": "raccordement-optique",
+          "name": "Raccordement Optique",
+          "description": "Raccordement optique monomode 900µm",
+          "filename": "racOptique.glb",
           "specifications": {
-            "Type": "Simplex",
-            "Connecteur": "SC/APC",
-            "Longueur": "1m",
-            "Grade": "G.657.A2"
           },
           "properties": {
-            "color": ["Bleu", "Vert", "Jaune"],
-            "length": ["1m", "1.5m", "2m"],
-            "connector_type": ["SC/APC", "SC/UPC", "LC/APC"]
-          }
-        },
-        {
-          "id": "breakout",
-          "name": "Câble Breakout",
-          "description": "Câble breakout 12 fibres préconnectorisé",
-          "filename": "model10.glb",
-          "specifications": {
-            "Type": "Breakout",
-            "Nombre de fibres": "12",
-            "Connecteurs": "LC/UPC",
-            "Grade": "OM4"
-          },
-          "properties": {
-            "color": ["Noir", "Bleu", "Jaune"],
-            "length": ["5m", "10m", "15m", "20m"],
-            "fiber_count": ["4", "8", "12"]
           }
         }
       ]
