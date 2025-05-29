@@ -1,10 +1,23 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { updateControlsTarget } from './orbitControls.js';
 
+// Initialize loaders with Draco support
 const loader = new GLTFLoader();
+const dracoLoader = new DRACOLoader();
+
+// Configure Draco decoder
+dracoLoader.setDecoderPath('/draco/'); // Path to the decoder files in public folder
+dracoLoader.setDecoderConfig({ type: 'js' }); // Use JS fallback initially, will auto-detect WASM
+
+// Set up Draco loader with GLTFLoader
+loader.setDRACOLoader(dracoLoader);
+
 let model;
 let currentScene = null;
+
+console.log('✅ GLTF Loader initialized with Draco compression support');
 
 // Create a default geometry for when models fail to load
 function createDefaultModel(type = 'connector') {
@@ -245,3 +258,14 @@ function handleSuccessfulLoad(loadedModel, resolve) {
 }
 
 export { model, loadModel };
+
+/**
+ * Cleanup function to dispose of Draco loader resources
+ * Call this when the application is shutting down
+ */
+export function cleanup() {
+    if (dracoLoader) {
+        dracoLoader.dispose();
+        console.log('🧹 Draco loader disposed');
+    }
+}
