@@ -13,33 +13,39 @@ A 3D viewer application for fiber optic products using Three.js. The application
 
 ## Technologies Used
 
-- **Three.js**: For 3D rendering
+- **Three.js v0.159.0**: For 3D rendering
+- **Vite v5.0.0**: For build tooling and development server
 - **JavaScript**: For application logic
 - **HTML/CSS**: For user interface
-- **Vite**: For build tooling
+- **GLTF Pipeline**: For 3D model optimization
 
 ## Project Structure
 
+- **src/**: Source code directory
+  - **main.js**: Main application logic
+  - **index.html**: Main HTML file
+  - **modules/**: Core application modules
+    - **scene.js**: Three.js scene setup
+    - **camera.js**: Camera configuration
+    - **renderer.js**: WebGL renderer setup
+    - **light.js**: Lighting setup
+    - **orbitControls.js**: Camera controls
+    - **model.js**: Model loading and manipulation
+    - **productLoader.js**: Product data loading and management
+    - **uiManager.js**: User interface management
+    - **urlManager.js**: URL parameter handling
+    - **navigationBuilder.js**: Navigation menu construction
+    - **animate.js**: Animation loop
+  - **styles/**: CSS styles
+    - **style.css**: Main styles
+- **public/**: Static assets
 - **assets/**: Contains 3D models and data files
   - **models.json**: Product data including specifications and configurable properties
   - **model*.glb**: 3D models of fiber optic products
-- **modules/**: Core application modules
-  - **scene.js**: Three.js scene setup
-  - **camera.js**: Camera configuration
-  - **renderer.js**: WebGL renderer setup
-  - **light.js**: Lighting setup
-  - **orbitControls.js**: Camera controls
-  - **model.js**: Model loading and manipulation
-  - **callouts.js**: Callout functionality
-  - **selectionManager.js**: Product selection management
-  - **animate.js**: Animation loop
-- **styles/**: CSS styles
-  - **style.css**: Main styles
-  - **callouts.css**: Callout styles
 - **scripts/**: Utility scripts
+  - **compress-models.js**: Script for optimizing 3D models
   - **utils.js**: Utility functions
-- **index.html**: Main HTML file
-- **main.js**: Main application logic
+- **dist/**: Build output directory
 
 ## Getting Started
 
@@ -53,6 +59,14 @@ A 3D viewer application for fiber optic products using Three.js. The application
    npm run dev
    ```
 4. Open your browser and navigate to `http://localhost:5173`
+
+## Available Scripts
+
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run preview`: Preview production build
+- `npm run deploy`: Deploy to GitHub Pages
+- `npm run compress`: Optimize 3D models
 
 ## Usage
 
