@@ -12,6 +12,7 @@
     "compress": "node scripts/compress-models.js"
   },
   "dependencies": {
+    "pdfkit": "^0.17.1",
     "three": "^0.159.0"
   },
   "devDependencies": {
