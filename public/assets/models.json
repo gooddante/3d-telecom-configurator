@@ -101,7 +101,7 @@
         {
           "id": "raccordement-optique",
           "name": "Raccordement Optique",
-          "description": "Raccordement optique monomode 900µm",
+          "description": "Raccordement optique monomode 900um",
           "filename": "racOptique.glb",
           "specifications": {
           },
