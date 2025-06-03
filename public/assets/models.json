@@ -13,16 +13,6 @@
           },
           "properties": {
           }
-        },
-        {
-          "id": "fx120",
-          "name": "FX120",
-          "description": "Connecteur FX120 haute performance pour applications professionnelles",
-          "filename": "fx120.glb",
-          "specifications": {
-          },
-          "properties": {
-          }
         }
       ]
     },
@@ -39,11 +29,27 @@
           },
           "properties": {
           }
+        }
+      ]
+    },
+    {
+      "id": "tests-mesures",
+      "name": "Tests et Mesures",
+      "products": [
+        {
+          "id": "fx120",
+          "name": "FX120",
+          "description": "Outil de test et mesure FX120 pour applications professionnelles",
+          "filename": "fx120.glb",
+          "specifications": {
+          },
+          "properties": {
+          }
         },
         {
           "id": "px90",
           "name": "PX90",
-          "description": "Câble fibre optique PX90 pour installation extérieure",
+          "description": "Outil de test et mesure PX90 pour installation extérieure",
           "filename": "px90.glb",
           "specifications": {
           },
