@@ -10,7 +10,7 @@ function generateCatalog(outputPath = 'catalog.pdf') {
     doc.pipe(fs.createWriteStream(outputPath));
 
     // Load the models data with forced reload
-    const modelsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../assets/models.json'), 'utf8'));
+    const modelsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../src/assets/models.json'), 'utf8'));
 
     // Set up the document
     doc.fontSize(25).text('Telecom Equipment Catalog', {

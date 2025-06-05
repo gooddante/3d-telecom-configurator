@@ -2,6 +2,8 @@
  * Product Loader - Simplified
  */
 
+import models from '../assets/models.json';
+
 let catalogueData = null;
 
 /**
@@ -12,12 +14,7 @@ export async function loadCatalogue() {
   if (catalogueData) return catalogueData;
   
   try {
-    const response = await fetch('/3d-telecom-configurator/assets/models.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load catalogue: ${response.status} ${response.statusText}`);
-    }
-    
-    catalogueData = await response.json();
+    catalogueData = models;
     console.log('✅ Catalogue loaded successfully');
     return catalogueData;
   } catch (error) {
