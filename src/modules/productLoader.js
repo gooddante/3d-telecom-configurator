@@ -40,7 +40,7 @@ export function findProductById(catalogue, productId) {
         return {
           ...product,
           category: { id: category.id, name: category.name },
-          model_url: product.filename ? `/3d-telecom-configurator/assets/${product.filename}` : null
+          model_url: product.filename ? `/3d-telecom-configurator/assets/models/${product.filename}` : null
         };
       }
     }
@@ -55,7 +55,7 @@ export function findProductById(catalogue, productId) {
               ...product,
               category: { id: category.id, name: category.name },
               subcategory: { id: subcategory.id, name: subcategory.name },
-              model_url: product.filename ? `/3d-telecom-configurator/assets/${product.filename}` : null
+              model_url: product.filename ? `/3d-telecom-configurator/assets/models/${product.filename}` : null
             };
           }
         }
@@ -175,7 +175,7 @@ export function getModelPath(product) {
     throw new Error('Invalid product or missing filename');
   }
   
-  return `/3d-telecom-configurator/assets/${product.filename}`;
+  return `/3d-telecom-configurator/assets/models/${product.filename}`;
 }
 
 /**

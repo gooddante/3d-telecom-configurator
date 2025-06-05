@@ -37,7 +37,7 @@ export function initializeScene() {
 
     // Set up the HDRI environment with error handling
     const rgbeLoader = new RGBELoader();
-    rgbeLoader.load('/3d-telecom-configurator/assets/studio.hdr', 
+    rgbeLoader.load('/3d-telecom-configurator/assets/environments/studio.hdr', 
         (texture) => {
             texture.mapping = THREE.EquirectangularReflectionMapping;
             scene.environment = texture; // Use HDRI only for environment lighting
