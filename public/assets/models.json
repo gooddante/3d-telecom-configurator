@@ -5,6 +5,22 @@
       "name": "Connecteurs",
       "products": [
         {
+          "id": "tiroir-animated",
+          "name": "Tiroir Animated",
+          "description": "Tiroir de raccordement optique avec animation",
+          "filename": "Tiroir Animated.glb",
+          "specifications": {
+            "type": "Tiroir de raccordement",
+            "matériau": "Plastique ABS",
+            "dimensions": "Standard 19 pouces",
+            "capacité": "12 ports"
+          },
+          "properties": {
+            "couleur": "Gris",
+            "type_installation": "Rack 19 pouces"
+          }
+        },
+        {
           "id": "prise-terminale-optique",
           "name": "Prise Terminale Optique",
           "description": "Prise terminale optique haute performance pour fibre optique",

@@ -16,6 +16,7 @@ loader.setDRACOLoader(dracoLoader);
 
 let model;
 let currentScene = null;
+let mixer = null; // Animation mixer
 
 console.log('✅ GLTF Loader initialized with Draco compression support');
 
@@ -80,6 +81,11 @@ function loadModel(scene, url, onProgress) {
         // Remove existing model if any
         if (model && currentScene) {
             currentScene.remove(model);
+            // Clean up animation mixer
+            if (mixer) {
+                mixer.stopAllAction();
+                mixer = null;
+            }
             model.traverse((child) => {
                 if (child.isMesh) {
                     if (child.material) {
@@ -103,6 +109,21 @@ function loadModel(scene, url, onProgress) {
                     console.warn('Model is empty or undefined, trying fallback model');
                     tryFallbackModel(url, resolve);
                     return;
+                }
+
+                // Handle animations if they exist
+                if (gltf.animations && gltf.animations.length > 0) {
+                    console.log(`Found ${gltf.animations.length} animations in the model`);
+                    mixer = new THREE.AnimationMixer(model);
+                    
+                    // Play all animations
+                    gltf.animations.forEach((animation, index) => {
+                        console.log(`Setting up animation: ${animation.name || `Animation ${index + 1}`}`);
+                        const action = mixer.clipAction(animation);
+                        action.setLoop(THREE.LoopOnce);
+                        action.clampWhenFinished = true;
+                        action.play();
+                    });
                 }
 
                 // Enable shadows and optimize materials
@@ -267,5 +288,12 @@ export function cleanup() {
     if (dracoLoader) {
         dracoLoader.dispose();
         console.log('🧹 Draco loader disposed');
+    }
+}
+
+// Function to update animations (to be called in animation loop)
+export function updateAnimations(deltaTime) {
+    if (mixer) {
+        mixer.update(deltaTime);
     }
 }
