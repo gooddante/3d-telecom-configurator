@@ -5,19 +5,31 @@
       "name": "Connecteurs",
       "products": [
         {
-          "id": "tiroir-animated",
-          "name": "Tiroir Animated",
-          "description": "Tiroir de raccordement optique avec animation",
-          "filename": "Tiroir Animated.glb",
-          "specifications": {
-            "type": "Tiroir de raccordement",
-            "matériau": "Plastique ABS",
-            "dimensions": "Standard 19 pouces",
-            "capacité": "12 ports"
-          },
-          "properties": {
-            "couleur": "Gris",
-            "type_installation": "Rack 19 pouces"
+          "id": "tiroir-fo",
+          "name": "Tiroir FO",
+          "filename": "tiroir_fo.glb",
+          "customization": {
+            "enabled": true,
+            "parameters": {
+              "port_count": {
+                "type": "select",
+                "label": "Nombre de ports",
+                "options": [
+                  { "value": "6", "label": "6 FO" },
+                  { "value": "12", "label": "12 FO" }
+                ],
+                "default": "12",
+                "visibility_rules": {
+                  "6": {
+                    "show": ["port_6_variant"],
+                    "hide": ["port_12_variant"]
+                  },
+                  "12": {
+                    "show": ["port_12_variant","port_6_variant"]
+                  }
+                }
+              }
+            }
           }
         },
         {
