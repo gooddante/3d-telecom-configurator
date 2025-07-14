@@ -16,12 +16,15 @@ import { getProductIdFromUrl, updateUrlWithProduct } from '@modules/urlManager.j
 import { updateProductDisplay, updateSpecifications, showError } from '@modules/uiManager.js';
 import { loadCatalogue, findProductById } from '@modules/productLoader.js';
 import { NavigationBuilder } from '@modules/navigationBuilder.js';
+import { CustomizationManager } from '@modules/CustomizationManager.js';
+import { buildCustomizationUI } from '@modules/customizationUI.js';
 
 // Global variables
 let scene, camera, renderer, controls;
 let currentProduct = null;
 let catalogue = null;
 let navigationBuilder = null;
+let customizationManager = null;
 
 /**
  * Initialize the 3D configurator
@@ -97,8 +100,28 @@ async function loadProductById(productId) {
         }
         
         if (product.model_url) {
-            await loadModel(scene, product.model_url);
+            const loadedModel = await loadModel(scene, product.model_url);
             console.log('✅ Product loaded successfully:', product.name);
+
+            // Customization system integration
+            if (product.customization && product.customization.enabled) {
+                customizationManager = new CustomizationManager(loadedModel, product);
+                buildCustomizationUI(product, (paramId, value) => {
+                    customizationManager.updateParameter(paramId, value);
+                });
+                // Set initial state for all parameters
+                const params = product.customization.parameters;
+                Object.entries(params).forEach(([paramId, param]) => {
+                    const defaultValue = param.default;
+                    if (defaultValue !== undefined) {
+                        customizationManager.updateParameter(paramId, defaultValue);
+                    }
+                });
+            } else {
+                // Clear customization UI if not enabled
+                const container = document.getElementById('customization-container');
+                if (container) container.innerHTML = '';
+            }
         } else {
             console.warn('⚠️ No model URL found for product:', product.name);
         }

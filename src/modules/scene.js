@@ -37,7 +37,7 @@ export function initializeScene() {
 
     // Set up the HDRI environment with error handling
     const rgbeLoader = new RGBELoader();
-    rgbeLoader.load('/3d-telecom-configurator/assets/studio.hdr', 
+    rgbeLoader.load('/3d-telecom-configurator/assets/images/studio.hdr', 
         (texture) => {
             texture.mapping = THREE.EquirectangularReflectionMapping;
             scene.environment = texture; // Use HDRI only for environment lighting
@@ -50,9 +50,9 @@ export function initializeScene() {
         }
     );
 
-    // Load the radial gradient image as the background
+    // Load the viewerBG image as the background
     const textureLoader = new THREE.TextureLoader();
-    textureLoader.load('/3d-telecom-configurator/assets/radialGradient.jpeg', (texture) => {
+    textureLoader.load('/3d-telecom-configurator/assets/images/viewerBG.jpg', (texture) => {
         scene.background = texture; // Set the image as the background
     });
 

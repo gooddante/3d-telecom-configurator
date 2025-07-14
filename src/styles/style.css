@@ -45,6 +45,16 @@ body {
   background-color: var(--background-light);
 }
 
+#viewer-logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100px;
+  height: auto;
+  z-index: 10;
+  pointer-events: none;
+}
+
 #viewer-canvas {
   display: block;
   width: 100%;
