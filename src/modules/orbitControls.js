@@ -17,8 +17,8 @@ export function initializeControls(camera, renderer) {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.screenSpacePanning = false;
-    controls.minDistance = 1;
-    controls.maxDistance = 50;
+    controls.minDistance = 5;
+    controls.maxDistance = 25;
     controls.maxPolarAngle = Math.PI;  // Allow full rotation
     controls.minPolarAngle = 0;        // Allow looking from below
 
