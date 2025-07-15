@@ -150,9 +150,11 @@ function loadModel(scene, url, onProgress) {
                 const size = box.getSize(new THREE.Vector3());
                 const center = box.getCenter(new THREE.Vector3());
 
-                // Scale the model to a reasonable size
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = maxDim > 0 ? 6 / maxDim : 1;
+                // Volume-based scaling for consistent visual impact
+                const volume = size.x * size.y * size.z;
+                const targetVolume = 30; // Adjust this value to make objects bigger/smaller
+                const scale = Math.pow(targetVolume / volume, 1/3);
+
                 model.scale.set(scale, scale, scale);
 
                 // Center the model
