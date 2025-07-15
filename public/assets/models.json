@@ -38,8 +38,46 @@
           "description": "Prise terminale optique haute performance pour fibre optique",
           "filename": "pto.glb",
           "specifications": {
+            "type": "Prise terminale optique",
+            "matériau": "Plastique ABS",
+            "dimensions": "Standard",
+            "performance": "Haute performance"
+          },
+          "customization": {
+            "enabled": true,
+            "parameters": {
+              "port_count": {
+                "type": "select",
+                "label": "Nombre de ports FO",
+                "options": [
+                  { 
+                    "value": "1", 
+                    "label": "1 FO", 
+                    "description": "Configuration 1 fibre optique"
+                  },
+                  { 
+                    "value": "2", 
+                    "label": "2 FO", 
+                    "description": "Configuration 2 fibres optiques"
+                  }
+                ],
+                "default": "1",
+                "visibility_rules": {
+                  "1": {
+                    "show": ["port_1_variant"],
+                    "hide": ["port_2_variant"]
+                  },
+                  "2": {
+                    "show": ["port_2_variant"],
+                    "hide": ["port_1_variant"]
+                  }
+                }
+              }
+            }
           },
           "properties": {
+            "type_installation": "Standard",
+            "couleur": "Gris"
           }
         },
         {
